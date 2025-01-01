@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.pop{
+    font-family: "Poppins", serif;
+    font-weight: 100;
+}
+
+.Header{
+    font-family: "Bebas Neue", serif;
+}
+
+.h1{
+    font-family: "Staatliches", serif;
+}
+.h2{
+  font-family: "Bangers", serif;
+}
+
+.h3{
+  font-family: "Sedgwick Ave Display", serif;
+}
+
+.h4{
+  font-family: "New Amsterdam", serif;
+}
+
+.th{
+  background-color: #1f1f1f;
+}
+.tb{
+  background-color: #121111;
+}
+
+/* From Uiverse.io by nima-mollazadeh */ 
+.button {
+    position: relative;
+    text-decoration: none;
+    color: #fff;
+    background: linear-gradient(45deg, #0ce39a, #69007f, #fc0987);
+    padding: 8px 35px;
+    border-radius: 6px;
+    font-family: "Staatliches", serif;
+    font-weight: normal;
+     font-size: 1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    @apply tracking-widest
+  }
+  
+  .button span {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .button::before {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    background: #000;
+    border-radius: 5px;
+    transition: 0.5s;
+  }
+  
+  .button:hover::before {
+    opacity: 0.7;
+  }
+  
+  .button::after {
+    content: "";
+    position: absolute;
+    inset: 0px;
+    background: linear-gradient(45deg, #0ce39a, #69007f, #fc0987);
+    border-radius: 9px;
+    transition: 0.5s;
+    opacity: 0;
+    filter: blur(20px);
+  }
+  
+  .button:hover:after {
+    opacity: 1;
+  }
+  
+
+  /* =================================================================================== */
+
+  .add-product-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .add-product-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  input,
+  textarea {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 100%;
+  }
+  
+  textarea {
+    resize: vertical;
+  }
+  
+  input.error,
+  textarea.error {
+    border-color: red;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 5px;
+  }
+  
+  .submit-btn {
+    background-color: #000;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+  
+  .submit-btn:disabled {
+    background-color: #ccc;
+  }
+  
+  .loading-message {
+    text-align: center;
+    font-size: 1.1rem;
+  }
+  
+  .general-error {
+    color: red;
+    font-size: 1rem;
+    margin-top: 10px;
+    text-align: center;
+  }
+  
+
+  .error {
+    border: 1px solid red;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 0.875em;
+    margin-top: 5px;
+  }
+  
+  .general-error {
+    color: red;
+    font-size: 1em;
+    margin-top: 10px;
+  }
+  
