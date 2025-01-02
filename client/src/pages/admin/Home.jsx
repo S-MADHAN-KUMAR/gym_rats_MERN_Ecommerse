@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable'; // Import jsPDF autoTable plugin
@@ -8,6 +8,28 @@ const Home = () => {
   const [filters, setFilters] = useState({ day: '', month: '', week: '', year: '', startDate: '', endDate: '' });
   const [report, setReport] = useState(null);
   const [error, setError] = useState(null);
+  const [statistics, setStatistics] = useState();
+
+
+console.log(statistics);
+
+
+  const fetchStatistics = async(req,res)=>{
+    try {
+      const res = await axios.get('http://localhost:3000/admin/get_sales_statistics')
+      if(res.status === 200){
+    setStatistics(res?.data?.statistics)
+      }
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
+  useEffect(()=>{
+    fetchStatistics()
+  },[])
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -115,9 +137,34 @@ const Home = () => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-4xl font-bold tracking-wider mb-6">Sales Report</h1>
-      <form onSubmit={handleSubmit} className="bg-white p-6 shadow-md rounded-md space-y-4 text-black">
+    <div className="p-6 mx-auto">
+
+<div className="w-full flex justify-between mb-40">
+<div className="border p-4 rounded-lg ">
+  <h1 className='h1 text-3xl tracking-wider mb-6'>Total Revenue</h1>
+  <p className='h2 text-6xl text-green-600'>₹ {statistics?.overallRevenue}</p>
+</div>
+<div className="border p-4 rounded-lg ">
+  <h1 className='h1 text-3xl tracking-wider mb-6'>Total Orders</h1>
+  <p className='h2 text-6xl text-blue-600'>{statistics?.overallSalesCount}</p>
+</div>
+
+<div className="border p-4 rounded-lg ">
+  <h1 className='h1 text-3xl tracking-wider mb-6'>This Month sales</h1>
+  <p className='h2 text-6xl text-green-600'>₹ {statistics?.
+monthlyRevenue
+}</p>
+</div>
+<div className="border p-4 rounded-lg ">
+  <h1 className='h1 text-3xl tracking-wider mb-6'>Monthly Earning</h1>
+  <p className='h2 text-6xl text-red-600'> {statistics?.monthlySalesCount}</p>
+</div>
+</div>
+
+
+      <h1 className="text-4xl tracking-wider mb-6 h1">Sales Report</h1>
+<div className="">
+<form onSubmit={handleSubmit} className="bg-white p-6 shadow-md rounded-md space-y-4 text-black">
         {/* Day */}
         <div className="form-group">
           <label htmlFor="day" className="block text-sm font-medium text-gray-700">Select Day</label>
@@ -254,6 +301,7 @@ const Home = () => {
           </button>
         </div>
       )}
+</div>
     </div>
   );
 };

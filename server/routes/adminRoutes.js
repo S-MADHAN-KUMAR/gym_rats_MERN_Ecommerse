@@ -7,7 +7,7 @@ import { block_user, get_all_users, handle_google_auth } from '../controllers/ad
 import upload from '../middlewares/multer.js'
 import { add_coupon, toggle_coupon_status } from '../controllers/user/couponsControllers.js';
 import { add_categories_offer, add_product_offer, block_categories_offer, block_product_offer, get_all_categories_offer, get_all_product_offer } from '../controllers/admin/offerControllers.js';
-import { get_all_orders, sales_report, update_order_status } from '../controllers/admin/ordersControllers.js';
+import { get_all_orders, get_sales_statistics, sales_report, update_order_status } from '../controllers/admin/ordersControllers.js';
 
 
 const router = express.Router();
@@ -33,6 +33,8 @@ router.post('/update_order_status',update_order_status)
 
 
 router.post('/sales_report',sales_report)
+
+router.get('/get_sales_statistics',get_sales_statistics)
 
 
 router.post('/add_product',upload.array('images', 5),add_product);

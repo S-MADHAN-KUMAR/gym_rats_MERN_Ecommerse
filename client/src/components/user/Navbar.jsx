@@ -91,7 +91,7 @@ const Navbar = () => {
                 <img src="https://img.icons8.com/?size=100&id=492ILERveW8G&format=png&color=000000" className="w-12" />
               </button>
               {isProfileOpen && (
-                <div className="h1 text-lg font-medium tracking-widest absolute right-0 mt-2 bg-gray-800 text-white shadow-lg rounded-lg w-48">
+                <div className="z-50 h1 text-lg font-medium tracking-widest absolute right-0 mt-2 bg-gray-800 text-white shadow-lg rounded-lg w-48">
                   <a
                     href="#my-account"
                     className="block px-4 py-2 hover:bg-gray-700 rounded-t-md"

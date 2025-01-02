@@ -115,8 +115,80 @@ export const update_order_status = async (req, res) => {
       res.status(500).json({ error: 'Failed to generate sales report' });
     }
   };
+
+
   
 
 
   
+  export const get_sales_statistics = async (req, res) => {
+    try {
+      // Get current month and year for filtering
+      const currentMonth = moment().month(); // 0-based index (0 = January, 11 = December)
+      const currentYear = moment().year();
+  
+      // Get overall revenue and sales count for delivered orders only
+      const overallStats = await OrderModel.aggregate([
+        {
+          $match: {
+            status: 'Delivered', // Only include orders with 'delivered' status
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalRevenue: { $sum: '$totalAmt' }, // Sum of totalAmt in orders
+            totalSalesCount: { $sum: 1 }, // Count of orders
+          },
+        },
+      ]);
+  
+      // Get overall revenue and total order count for the current month, only delivered orders
+      const monthlyStats = await OrderModel.aggregate([
+        {
+          $match: {
+            status: 'Delivered', // Only include orders with 'delivered' status
+            date: {
+              $gte: moment().startOf('month').toDate(),
+              $lte: moment().endOf('month').toDate(),
+            },
+          },
+        },
+        {
+          $group: {
+            _id: null,
+            totalRevenue: { $sum: '$totalAmt' },
+            totalSalesCount: { $sum: 1 },
+          },
+        },
+      ]);
+  
+      // Get statistics if data exists
+      const overallRevenue = overallStats.length > 0 ? overallStats[0].totalRevenue : 0;
+      const overallSalesCount = overallStats.length > 0 ? overallStats[0].totalSalesCount : 0;
+  
+      const monthlyRevenue = monthlyStats.length > 0 ? monthlyStats[0].totalRevenue : 0;
+      const monthlySalesCount = monthlyStats.length > 0 ? monthlyStats[0].totalSalesCount : 0;
+  
+      // Prepare response object
+      const statistics = {
+        overallRevenue,
+        overallSalesCount,
+        monthlyRevenue,
+        monthlySalesCount,
+      };
+  
+      // Return statistics as response
+      res.status(200).json({
+        success: true,
+         statistics,
+      });
+    } catch (error) {
+      console.error('Error fetching sales statistics:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to fetch sales statistics. Please try again.',
+      });
+    }
+  };
   

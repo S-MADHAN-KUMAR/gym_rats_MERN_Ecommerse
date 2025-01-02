@@ -16,9 +16,44 @@ const Card = ({ product }) => {
     const fetchedUser = await fetchCurrUser(currentUser?._id);
     setCurrUser(fetchedUser);
   };
+
+  const [categoriesOffers, setCategorisOffers] = useState([]);
+
+  const [productOffers, setProductOffers] = useState([]);
+
+  const fetchProductOffers = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/admin/get_all_product_offer');
+      const activeOffers = response.data.filter(offer => offer.status === true);
+    setProductOffers(activeOffers);
+    } catch (err) {
+      console.error('Error fetching product offers:', err);
+    } 
+  };
+
+
+
+  // Fetch product offers
+  const fetchCategoryOffers = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/admin/get_all_categories_offer');
+      const activeCategoryOffers = response.data.filter(offer => offer.status === true);
+    
+    setCategorisOffers(activeCategoryOffers);
+    } catch (err) {
+      setError('Failed to fetch product offers. Please try again later.');
+      console.error('Error fetching product offers:', err);
+    } finally {
+      setLoading(false); // Set loading to false after data is fetched
+    }
+  };
+
+
   useEffect(() => {
     if (currentUser?._id) {
       fetchUserData();
+      fetchProductOffers()
+      fetchCategoryOffers()
     }
   }, []);  
 
@@ -80,21 +115,39 @@ const Card = ({ product }) => {
 
   const isInWishlist = currUser?.wishlist.some((item) => item.productId === product?._id);
 
+  const matchingProductOffer = productOffers?.find(offer => offer.productId === product?._id);
+    const matchingCategoryOffer = categoriesOffers?.find(offer => offer.categoryId === product?.category);
+
   return (
-    <div className="p-1 border w-[180px] shadow-sm rounded-lg h-[250px] relative">
+    <div className="p-1 border w-[180px] shadow-sm rounded-lg h-[280px] relative">
       <Link to={`/products/${product._id}`}>
         <div className="border rounded-md w-full h-[58%]">
-          <img src={product?.imageUrls?.[0]} className="w-full h-full object-contain" alt={product?.name} />
+          <img src={product?.imageUrls?.[0]} className="w-full h-full object-cover" alt={product?.name} />
         </div>
       </Link>
-      <div className="border">
+      <div className="">
         <p className="text">
           {product?.name.length > 18 ? `${product?.name.slice(0, 18)}...` : product?.name}
         </p>
         <div className="flex justify-between">
-          <p>$ {product?.price}</p>
+        {
+  matchingProductOffer || matchingCategoryOffer ? (
+    <div className="flex items-center gap-2">
+      <p className="text-red-500 font-semibold">
+        ₹ {Math.round(product?.price - (product?.price * (matchingProductOffer?.discount || matchingCategoryOffer?.discount)) / 100)}
+      </p>
+      <p className="line-through text-gray-500">$ {product?.price}</p>
+    </div>
+  ) : (
+    // If no offer is found, display the original price
+    <p className="font-semibold">$ {product?.price}</p>
+  )
+}
+
+
+
         </div>
-        <div className="flex gap-x-2 items-center border">
+        <div className="flex gap-x-2 items-center ">
           <div className="flex gap-x-1">
             {Array(4).fill(0).map((_, index) => (
               <img

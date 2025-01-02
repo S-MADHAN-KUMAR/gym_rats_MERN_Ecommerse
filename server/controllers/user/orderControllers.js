@@ -183,23 +183,23 @@ export const get_user_order_detail = async(req,res)=>{
   }
 }
 
-export const order_cancel = async(req,res)=>{
+export const order_cancel = async (req, res) => {
   try {
-    const { id } = req.params;  
+    const { id } = req.params;
 
-    const order = await OrderModel.findById(id);  
-    
-    if (!order ) {
+    const order = await OrderModel.findById(id);
+
+    if (!order) {
       return res.status(400).json({ message: 'No orders found for this user!' });
     }
 
-    order.status = 'Cancelled'
+    order.status = 'Cancelled';
 
     await Promise.all(
       order?.products.map(async (product) => {
         const existProduct = await ProductModel.findById(product?.productId); // Make sure productId exists
         if (existProduct) {
-          existProduct.stock += product.quantity; // Decrease stock based on the quantity ordered
+          existProduct.stock += product.quantity; // Increase stock based on the quantity ordered
           await existProduct.save();
         } else {
           console.log(`Product not found: ${product?.productId}`);
@@ -207,14 +207,13 @@ export const order_cancel = async(req,res)=>{
       })
     );
 
-    await order.save()
+    await order.save();
 
-
-    res.status(200).json({message:'Order Canceled successfully !'})
-
-    return res.status(200).json(order);
+    // Send only one response
+    res.status(200).json({ message: 'Order Canceled successfully!' });
   } catch (error) {
     console.error("Server Error:", error);
     return res.status(500).json({ message: "Internal server error", error: error.message });
   }
-}
+};
+

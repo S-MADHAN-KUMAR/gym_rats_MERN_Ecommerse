@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchCurrUser } from '../../api/user.js';
 import { Link, Outlet } from 'react-router-dom';
+import { Logout } from '../../redux/user/userSlice.js';
 
 const Profile = () => {
   const { currentUser } = useSelector((state) => state.user); 
   const [currUser, setCurrUser] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (currentUser?._id) {
@@ -41,7 +44,7 @@ const Profile = () => {
           <Link to="/profile/orders">Orders</Link>
           <Link to="/profile/wallet">Wallet</Link>
         </div>
-        <button className='button'>
+        <button onClick={()=>dispatch(Logout)} className='button'>
           <span>Logout</span>
         </button>
       </div>

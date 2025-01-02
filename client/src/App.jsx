@@ -42,6 +42,7 @@ const Add_Categories = lazy(() => import('./components/user/Categories/Add_Categ
 const Add_Categories_Offers = lazy(() => import('./components/user/Offers/Categories_Offers/Add_Categories_Offers'));
 const Add_Products_Offers = lazy(() => import('./components/user/Offers/Product_Offers/Add_Product_Offers'));
 const Dashboard_Home = lazy(() => import('./pages/admin/Home'));
+const Wallet_Success= lazy(() => import('./components/user/Profile-views/Wallet_Success'));
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
         <Route path="add_address" element={<Add_address />} />
         <Route path="edit_address/:id" element={<Edit_address />} />
         <Route path="wallet" element={<Wallet />} />
+            <Route path="success" element={<Wallet_Success />} />
       </Route>
 
           <Route path="/products/:id" element={<ProductDetail />} />

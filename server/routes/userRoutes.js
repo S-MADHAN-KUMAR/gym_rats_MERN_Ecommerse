@@ -8,8 +8,18 @@ import { forgotPassword, loginUser, registerUser, resendOtp, resendOtpForgotPass
 import { get_all_coupons } from '../controllers/user/couponsControllers.js';
 import { get_user_order_detail, get_user_orders, order_cancel, place_order } from '../controllers/user/orderControllers.js';
 import { add_to_wishlist, get_user_wishlist, remove_wishlist_product } from '../controllers/user/wishlistsControllers.js';
+import {  add_wallet_amount, get_user_wallet, handle_successful_payment } from '../controllers/user/walletControllers.js';
 
 const router = express.Router()
+
+
+
+
+router.post('/add_wallet_amount', add_wallet_amount);
+
+router.post('/get_user_wallet',get_user_wallet)
+
+router.get('/handle_successful_payment/:id',handle_successful_payment)
 
 
 router.get('get_all_coupons',get_all_coupons)
